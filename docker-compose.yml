@@ -1,0 +1,27 @@
+version: "2"
+
+services:
+  nats:
+    image: "nats:latest"
+    expose:
+      - "4222"
+    ports:
+      - "8222:8222"
+      - "4222:4222"
+    hostname: nats-server
+    container_name: nats-server
+    networks:
+      - nats
+    volumes:
+      - ./config/config.conf:/etc/nats/nats.conf
+    command: -c /etc/nats/nats.conf
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "500m"
+    restart: always
+
+networks:
+  nats:
+    driver: bridge
